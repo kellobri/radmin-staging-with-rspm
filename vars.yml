@@ -1,0 +1,7 @@
+---
+
+# R Version Vars
+r_version: 3.4.3
+r_version_ref: R-{{ r_version }}
+r_tarfile: "{{ r_version_ref }}.tar.gz"
+r_download: https://cran.rstudio.com/src/base/R-3/{{ r_tarfile }}

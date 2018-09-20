@@ -1,0 +1,25 @@
+---
+
+  - name: Set CRAN Mirror
+    lineinfile:
+      path: /opt/R/3.4.3/lib64/R/etc/Rprofile.site
+      line: 'local({r <- getOption("repos"); r["CRAN"] <- "https://demo.rstudiopm.com/cran/latest"; options(repos = r)})'
+      state: present
+      create: yes
+    become: yes
+
+  - name: Install R packages part 2
+    command: /opt/R/3.4.3/bin/Rscript -e 'install.packages("{{ item }}", type= "source")'
+    with_items:
+      - "glue"
+      - "stringi"
+      - "odbc"
+      - "h2o"
+      - "igraph"
+    register: packages
+    ignore_errors: true
+    become: yes
+
+  - name: Print results
+    debug: msg="item.item={{item.item}}, item.stderr={{item.stderr}}"
+    with_items: "{{packages.results}}"
